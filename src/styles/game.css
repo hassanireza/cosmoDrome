@@ -1,0 +1,621 @@
+/* ==========================================================================
+   COSMODROME, design tokens
+   Editorial, tactile, almost static. A relic pulled from black water:
+   bone and ash monochrome, one oxidized-copper accent, coarse grain on
+   every surface, condensation at the edges. Nothing here reads as
+   digitally clean.
+   ========================================================================== */
+
+:root {
+  /* color, near-monochrome bone and ash with a single patina accent */
+  --bg-deep: #0a0908;
+  --bg-deep-2: #100f0d;
+  --panel: #16140f;
+  --panel-2: #1c1a15;
+  --panel-edge: #38332a;
+  --ink: #ded6c8;
+  --ink-soft: #8a8377;
+  --signal: #7f8f7a;
+  --signal-dim: #5c6a58;
+  --shield: #9aa79a;
+  --laser-red: #a06a52;
+  --laser-green: #7a8f78;
+  --warn: #b0a17a;
+  --danger: #a06a52;
+
+  /* type, museum conservation label meets baroque portraiture */
+  --font-display: 'Cormorant Garamond', 'Spectral', serif;
+  --font-body: 'Spectral', 'Cormorant Garamond', serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* shape, worn rather than machined */
+  --radius-lg: 4px;
+  --radius-md: 3px;
+  --radius-sm: 2px;
+  --shadow-card: 0 24px 60px -18px rgba(0, 0, 0, 0.85), 0 1px 0 rgba(222, 214, 200, 0.04) inset;
+
+  /* texture */
+  --grain-opacity: 0.16;
+  --grain-svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+* { box-sizing: border-box; }
+*, *::before, *::after { min-width: 0; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: radial-gradient(120% 120% at 50% -10%, var(--bg-deep-2) 0%, var(--bg-deep) 60%);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  overscroll-behavior: none;
+}
+
+/* Coarse film grain over the entire surface. Fixed, not animated: the
+   texture should feel like a physical property of the print, not a
+   digital effect layered on top of it. */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  pointer-events: none;
+  background-image: var(--grain-svg);
+  opacity: var(--grain-opacity);
+  mix-blend-mode: overlay;
+}
+
+#root { height: 100%; }
+
+/* ==========================================================================
+   Stage, the dark room the relic sits in
+   ========================================================================== */
+
+.stage {
+  position: relative;
+  height: 100dvh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: env(safe-area-inset-top, 10px) env(safe-area-inset-right, 10px)
+    env(safe-area-inset-bottom, 10px) env(safe-area-inset-left, 10px);
+  gap: 8px;
+  overflow: hidden;
+}
+
+#bgstars {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.5;
+}
+
+.credit {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: rgba(222, 214, 200, 0.3);
+  margin: 0;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   The cabinet, a tall 135mm-portrait relic frame holding the whole piece.
+   Shallow, near-static; a worn metal and leather edge rather than a
+   machined console.
+   ========================================================================== */
+
+.cabinet {
+  position: relative;
+  z-index: 1;
+  width: min(94vw, 430px);
+  aspect-ratio: 135 / 188;
+  max-height: 100%;
+  background:
+    repeating-linear-gradient(115deg, rgba(0, 0, 0, 0.06) 0 2px, transparent 2px 6px),
+    linear-gradient(180deg, var(--panel-2), var(--panel));
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card), inset 0 0 0 1px rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--panel-edge);
+  padding: 14px 14px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+}
+
+.cabinet-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 4px;
+  flex-shrink: 0;
+  gap: 8px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(19px, 4.8vw, 26px);
+  font-weight: 500;
+  font-style: italic;
+  letter-spacing: 0.06em;
+  margin: 0;
+  color: var(--ink);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.6);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  min-width: 0;
+}
+
+.weapon-chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 132px;
+}
+.weapon-chip-label { color: var(--ink-soft); }
+.weapon-chip span:last-child {
+  color: var(--signal);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chip-btn {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--panel-edge);
+  color: var(--ink-soft);
+  border-radius: var(--radius-sm);
+  padding: 7px 12px;
+  cursor: pointer;
+  transition: color 0.3s ease, border-color 0.3s ease;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.chip-btn:hover { color: var(--ink); border-color: var(--ink-soft); }
+.chip-btn[aria-pressed="true"] { color: var(--signal); border-color: var(--signal-dim); }
+
+/* ==========================================================================
+   Viewport, the porthole. Canvas plus all HUD chips and overlay screens
+   live inside this relatively positioned box.
+   ========================================================================== */
+
+.viewport {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #000;
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(222, 214, 200, 0.04);
+}
+
+#game {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  touch-action: none;
+}
+
+/* ==========================================================================
+   HUD, chips floating over the porthole
+   ========================================================================== */
+
+.hud {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.hud-label {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  display: block;
+}
+
+.hud-value {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--ink);
+  display: block;
+  line-height: 1.2;
+}
+
+.hud-left {
+  top: 10px;
+  left: 10px;
+  display: flex;
+  gap: 3px;
+}
+
+.hud-right {
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 10px;
+  text-align: right;
+}
+
+.hud-sector {
+  top: 48px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.hud-sector .hud-label { white-space: nowrap; }
+
+.sector-bar {
+  flex: 1;
+  height: 5px;
+  border-radius: var(--radius-sm);
+  background: rgba(222, 214, 200, 0.12);
+  overflow: hidden;
+}
+.sector-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--signal-dim), var(--signal));
+  border-radius: var(--radius-sm);
+  transition: width 0.25s ease;
+}
+
+.hud-boss {
+  top: 48px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.hud-boss.hidden { display: none; }
+.hud-boss .hud-label { white-space: nowrap; color: var(--laser-red); }
+.boss-bar {
+  flex: 1;
+  height: 7px;
+  border-radius: var(--radius-sm);
+  background: rgba(222, 214, 200, 0.12);
+  overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(160, 106, 82, 0.35);
+}
+.boss-fill {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, var(--laser-red), var(--warn));
+  border-radius: var(--radius-sm);
+  transition: width 0.2s ease;
+}
+
+.ship-icon { display: block; filter: drop-shadow(0 0 3px rgba(127, 143, 122, 0.5)); }
+
+.combo {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 24px;
+  color: var(--warn);
+  text-shadow: none;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.combo.show { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+
+.toast {
+  position: absolute;
+  z-index: 4;
+  top: 80px;
+  left: 50%;
+  transform: translate(-50%, -8px);
+  background: rgba(10, 9, 8, 0.9);
+  border: 1px solid rgba(222, 214, 200, 0.16);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  white-space: nowrap;
+  max-width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+/* ==========================================================================
+   Weapon dock, sits at the base of the porthole
+   ========================================================================== */
+
+.weapon-dock {
+  position: absolute;
+  z-index: 2;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.weapon-select {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  background: rgba(10, 9, 8, 0.72);
+  border: 1px solid var(--panel-edge);
+  border-radius: var(--radius-sm);
+  padding: 6px 8px;
+  cursor: pointer;
+}
+.weapon-select:focus-visible { outline-offset: 1px; }
+
+.weapon-heat {
+  height: 4px;
+  border-radius: var(--radius-sm);
+  background: rgba(222, 214, 200, 0.12);
+  overflow: hidden;
+}
+.weapon-heat-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--signal), var(--laser-red));
+  border-radius: var(--radius-sm);
+  transition: width 0.1s linear;
+}
+
+/* ==========================================================================
+   Overlays, relic cards drifting over the porthole, edges softened by a
+   condensation-like vignette rather than a hard blur.
+   ========================================================================== */
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  background: radial-gradient(120% 100% at 50% 30%, rgba(10, 9, 8, 0.4), rgba(5, 5, 4, 0.82));
+  backdrop-filter: blur(2px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.overlay.hidden { display: none; }
+
+.paper-card {
+  width: 100%;
+  max-width: 340px;
+  margin: auto;
+  background:
+    radial-gradient(140% 100% at 20% 0%, rgba(255, 255, 255, 0.03), transparent 60%),
+    linear-gradient(180deg, var(--panel-2), var(--panel));
+  border-radius: var(--radius-md);
+  border: 1px solid var(--panel-edge);
+  box-shadow: var(--shadow-card);
+  padding: clamp(16px, 4vh, 24px) clamp(16px, 4vw, 22px);
+  text-align: center;
+  color: var(--ink);
+}
+.paper-card.small { max-width: 240px; padding: clamp(18px, 4vh, 26px) 20px; }
+.paper-card.boss-card {
+  border-color: var(--laser-red);
+  box-shadow: var(--shadow-card), 0 0 30px -4px rgba(160, 106, 82, 0.4);
+  animation: bossPulse 4s ease-in-out infinite;
+}
+.boss-card .eyebrow { color: var(--laser-red); }
+.boss-card .card-title { text-shadow: none; }
+
+@keyframes bossPulse {
+  0%, 100% { box-shadow: var(--shadow-card), 0 0 22px -4px rgba(160, 106, 82, 0.3); }
+  50% { box-shadow: var(--shadow-card), 0 0 32px -2px rgba(160, 106, 82, 0.5); }
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--signal);
+  margin: 0 0 8px;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+.card-title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-style: italic;
+  font-size: clamp(20px, 5.6vw, 27px);
+  margin: 0 0 8px;
+  letter-spacing: 0.02em;
+  line-height: 1.3;
+  text-shadow: none;
+}
+
+.tagline {
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin: 0 0 14px;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.finalscore {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 6vw, 28px);
+  margin: 4px 0 4px;
+  line-height: 1.4;
+}
+.finalscore .hud-label { display: inline; color: var(--ink-soft); font-family: var(--font-mono); }
+
+.newbest {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--warn);
+  background: rgba(176, 161, 122, 0.14);
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  margin: 4px 0 12px;
+}
+.newbest.hidden { display: none; }
+
+.leaderboard { margin: 4px 0 14px; }
+.leaderboard .hud-label { color: var(--ink-soft); margin-bottom: 6px; }
+
+.score-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  max-height: 30vh;
+  overflow-y: auto;
+}
+.score-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 10px;
+  background: rgba(0, 0, 0, 0.18);
+  border-radius: var(--radius-sm);
+}
+.score-list li .rank { color: var(--ink-soft); width: 22px; text-align: left; flex-shrink: 0; }
+.score-list .empty { color: var(--ink-soft); justify-content: center; }
+
+.btn-primary {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  color: var(--bg-deep);
+  background: linear-gradient(180deg, var(--ink), var(--ink-soft));
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 13px 30px;
+  cursor: pointer;
+  box-shadow: 0 8px 18px -6px rgba(0, 0, 0, 0.6);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  white-space: nowrap;
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 10px 22px -6px rgba(0, 0, 0, 0.7); }
+.btn-primary:active { transform: translateY(0); }
+
+.howto {
+  margin: 14px 0 0;
+  padding: 10px 0 0;
+  border-top: 1px dashed var(--panel-edge);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 10px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-soft);
+  text-align: left;
+  line-height: 1.5;
+}
+.howto span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* ==========================================================================
+   Bottom chrome, instructions and touch controls
+   ========================================================================== */
+
+.cabinet-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 4px 0;
+  flex-shrink: 0;
+  margin: 0;
+}
+
+.instructions {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.02em;
+  color: var(--ink-soft);
+  text-align: center;
+  line-height: 1.4;
+}
+
+.touch-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.touch-btn {
+  width: 52px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--panel-edge);
+  background: rgba(222, 214, 200, 0.05);
+  color: var(--ink);
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  touch-action: none;
+}
+.touch-btn:active { background: rgba(222, 214, 200, 0.12); }
+.touch-btn.boost { background: linear-gradient(180deg, var(--signal), var(--signal-dim)); color: var(--bg-deep); border-color: transparent; }
+.touch-btn.weapon { background: rgba(154, 167, 154, 0.12); border-color: var(--shield); color: var(--shield); font-size: 19px; }
+
+@media (hover: hover) and (pointer: fine) {
+  .touch-controls { display: none; }
+}
+
+@media (max-height: 620px) {
+  .howto { display: none; }
+  .cabinet-bottom { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
