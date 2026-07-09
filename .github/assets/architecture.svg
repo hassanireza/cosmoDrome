@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 640" width="1100" height="640">
+  <defs>
+    <style>
+      .box { fill: #16140f; stroke: #38332a; stroke-width: 1.3; }
+      .boxAlt { fill: #1c1a15; stroke: #38332a; stroke-width: 1.3; }
+      .label { font-family: 'JetBrains Mono', monospace; font-size: 14px; fill: #ded6c8; font-weight: 600; }
+      .sub { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #8a8377; }
+      .edge { stroke: #7f8f7a; stroke-width: 1.4; fill: none; opacity: 0.8; }
+      .edgeDim { stroke: #48453c; stroke-width: 1.2; fill: none; }
+      .tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #a06a52; letter-spacing: 0.5px; }
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#7f8f7a"/>
+    </marker>
+  </defs>
+
+  <rect width="1100" height="640" fill="#0a0908"/>
+  <text x="30" y="40" font-family="'Cormorant Garamond', serif" font-style="italic" font-weight="500" font-size="20" fill="#ded6c8">engine architecture</text>
+
+  <text x="30" y="80" class="tag">REACT LAYER, view only, no simulation logic</text>
+  <rect x="30" y="92" width="1040" height="86" rx="4" class="boxAlt"/>
+  <text x="50" y="118" class="label">App -&gt; GameScreen</text>
+  <text x="50" y="138" class="sub">TopBar, Hud, WeaponDock, Overlays, TouchControls</text>
+  <text x="50" y="158" class="sub">reads: useGameEngine() -&gt; HudSnapshot, pushed once per rendered frame</text>
+
+  <path d="M550 178 L550 210" class="edge" marker-end="url(#arrow)"/>
+  <rect x="380" y="210" width="340" height="52" rx="4" class="boxAlt"/>
+  <text x="400" y="242" class="label">useGameEngine()</text>
+
+  <path d="M550 262 L550 294" class="edge" marker-end="url(#arrow)"/>
+  <rect x="230" y="294" width="640" height="90" rx="4" class="box"/>
+  <text x="250" y="322" class="label">GameEngine</text>
+  <text x="250" y="342" class="sub">owns World state, Player, entity pools, and the fixed-timestep loop</text>
+  <text x="250" y="360" class="sub">start(), update(dt), startGame(), setWeapon(), tryHop(), onHud()</text>
+
+  <path d="M300 384 L200 440" class="edgeDim"/>
+  <path d="M420 384 L420 440" class="edgeDim"/>
+  <path d="M560 384 L560 440" class="edgeDim"/>
+  <path d="M700 384 L800 440" class="edgeDim"/>
+
+  <rect x="100" y="440" width="180" height="70" rx="4" class="boxAlt"/>
+  <text x="118" y="466" class="label" font-size="13">Renderer</text>
+  <text x="118" y="484" class="sub">draws obstacles, boss,</text>
+  <text x="118" y="498" class="sub">bolts, corridor, FX</text>
+
+  <rect x="330" y="440" width="180" height="70" rx="4" class="boxAlt"/>
+  <text x="348" y="466" class="label" font-size="13">InputController</text>
+  <text x="348" y="484" class="sub">keyboard + touch edge</text>
+  <text x="348" y="498" class="sub">events -&gt; InputState</text>
+
+  <rect x="470" y="440" width="180" height="70" rx="4" class="boxAlt"/>
+  <text x="488" y="466" class="label" font-size="13">AudioEngine</text>
+  <text x="488" y="484" class="sub">synthesized chiptune sfx</text>
+  <text x="488" y="498" class="sub">no external audio files</text>
+
+  <rect x="710" y="440" width="180" height="70" rx="4" class="boxAlt"/>
+  <text x="728" y="466" class="label" font-size="13">StorageService</text>
+  <text x="728" y="484" class="sub">best score, top 5,</text>
+  <text x="728" y="498" class="sub">mute + weapon prefs</text>
+
+  <path d="M550 384 L550 550" class="edgeDim"/>
+  <rect x="230" y="550" width="640" height="60" rx="4" class="boxAlt"/>
+  <text x="250" y="576" class="label" font-size="13">Entities, pooled and reused every frame</text>
+  <text x="250" y="596" class="sub">Player, Obstacle, Boss, Bolt, EnemyBolt, Particle</text>
+
+  <rect x="900" y="294" width="170" height="316" rx="4" class="box"/>
+  <text x="920" y="322" class="label" font-size="13">Physics</text>
+  <text x="920" y="342" class="sub">pure, static</text>
+  <text x="920" y="358" class="sub">math methods:</text>
+  <text x="920" y="378" class="sub">clamp, lerp</text>
+  <text x="920" y="394" class="sub">approach</text>
+  <text x="920" y="410" class="sub">projectScale</text>
+  <text x="920" y="426" class="sub">laneToX</text>
+  <text x="920" y="442" class="sub">steerVelocity</text>
+  <text x="920" y="458" class="sub">sectorQuota</text>
+  <text x="920" y="474" class="sub">spawnInterval</text>
+  <text x="920" y="494" class="sub">no DOM access,</text>
+  <text x="920" y="510" class="sub">fully unit testable</text>
+  <path d="M900 400 L870 400" class="edgeDim"/>
+</svg>
