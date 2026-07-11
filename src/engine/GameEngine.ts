@@ -101,7 +101,6 @@ export class GameEngine {
 
     this.audio = new AudioEngine(this.storage.getMute());
     this.player.weapon = this.storage.getWeapon();
-
     this.world = {
       t: 0, distance: 0, curveCur: 0, curveTarget: 0, curveTimer: 1.5,
       sector: 0, sectorProgress: 0, sectorQuota: P.sectorQuota(0, CFG.SECTOR_BASE, CFG.SECTOR_GROWTH),
@@ -137,6 +136,14 @@ export class GameEngine {
       },
       onHidden: () => { if (this.state === STATE.PLAYING) this.togglePause(); },
     });
+
+    // Android and most non-iOS browsers don't require a user gesture to
+    // start listening for orientation events, so we can silently restore
+    // this preference. iOS needs a tap (handled by toggleTilt from the UI),
+    // so this just resolves to false there and the player re-enables it.
+    if (this.storage.getTiltPreferred()) {
+      void this.input.enableTilt();
+    }
   }
 
   // -- setup -----------------------------------------------------------
@@ -299,6 +306,18 @@ export class GameEngine {
     return next;
   }
 
+  /** Must be called from a user gesture (tap) so iOS can show its motion permission prompt. */
+  async toggleTilt(): Promise<boolean> {
+    if (this.input.isTiltActive()) {
+      this.input.disableTilt();
+      this.storage.setTiltPreferred(false);
+      return false;
+    }
+    const granted = await this.input.enableTilt();
+    this.storage.setTiltPreferred(granted);
+    return granted;
+  }
+
   tryHop(): void {
     if (this.state !== STATE.PLAYING && this.state !== STATE.BOSS) return;
     if (this.player.hopCooldown > 0) return;
@@ -384,27 +403,38 @@ export class GameEngine {
   }
 
   private currentSpeed(): number {
-    const base = P.speedAtTime(this.world.t, CFG.MIN_SPEED, CFG.MAX_SPEED, CFG.SPEED_TAU) + this.world.sector * CFG.SECTOR_SPEED_BUMP;
+    // Short ramp from a standstill up to cruising speed, then steady,
+    // clearly noticeable jumps every time a sector is cleared. Total is
+    // capped so the game keeps getting faster for a long time instead of
+    // saturating in the first minute and feeling like it stopped scaling.
+    const ramped = P.speedAtTime(this.world.t, CFG.MIN_SPEED, CFG.SPEED_RAMP_TARGET, CFG.SPEED_TAU);
+    const withSectors = ramped + this.world.sector * CFG.SECTOR_SPEED_BUMP;
+    const base = Math.min(withSectors, CFG.MAX_SPEED);
     return base * this.world.inputMul * this.world.speedPenalty;
   }
 
   private updatePlayer(dt: number, speed: number): void {
     const input: InputState = this.input.state;
-    const dir = (input.right ? 1 : 0) - (input.left ? 1 : 0);
+    // Buttons/keyboard always win if pressed, tilt fills in the rest so a
+    // player can nudge-correct with a tap even while steering by tilt.
+    const digital = (input.right ? 1 : 0) - (input.left ? 1 : 0);
+    const dir = digital !== 0 ? digital : P.clamp(input.tilt, -1, 1);
     const pl = this.player;
     pl.vel = P.steerVelocity(dir, pl.vel, dt, CFG.STEER_ACCEL, CFG.STEER_DECEL, CFG.STEER_MAXSPEED);
     const drift = this.world.curveCur * CFG.CENTRIFUGAL * (speed / CFG.MAX_SPEED);
     pl.lane += (pl.vel + drift) * dt;
 
+    // Reaching the edge of the corridor just stops outward velocity, it
+    // is normal steering, not a mistake, so it should never cost speed.
+    // Applying a speed penalty here was what made the ship feel like it
+    // was "sticking" to the walls.
     if (pl.lane > 1) {
       pl.lane = 1;
       pl.vel = dir > 0 ? 0 : pl.vel;
-      this.world.speedPenalty = Math.min(this.world.speedPenalty, 0.92);
     }
     if (pl.lane < -1) {
       pl.lane = -1;
       pl.vel = dir < 0 ? 0 : pl.vel;
-      this.world.speedPenalty = Math.min(this.world.speedPenalty, 0.92);
     }
     pl.lane = P.clampLane(pl.lane);
     pl.bank = P.approach(pl.bank, P.clamp(pl.vel * 0.3, -1, 1), dt, 10);
@@ -1000,6 +1030,8 @@ export class GameEngine {
       toastMessage: this.currentToast,
       toastNonce: this.toastNonce,
       muted: this.audio.isMuted(),
+      tiltEnabled: this.input.isTiltActive(),
+      tiltAvailable: InputController.tiltSupported(),
     };
     this.hudListener(snapshot);
   }

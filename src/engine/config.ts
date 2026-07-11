@@ -11,13 +11,22 @@ export const CFG = {
   CURVE_AMP: 130,
 
   MIN_SPEED: 480,
-  MAX_SPEED: 2100,
-  SPEED_TAU: 24,
-  SECTOR_SPEED_BUMP: 45,
+  // Quick initial ramp only: gets the ship up to a comfortable cruising
+  // speed in the first few seconds. Long term speed growth comes from
+  // SECTOR_SPEED_BUMP below, so progression stays readable sector to
+  // sector instead of flatlining once the early ramp saturates.
+  SPEED_RAMP_TARGET: 760,
+  SPEED_TAU: 6,
+  // Hard cap on total speed (ramp + sector bumps). Keeps the late game
+  // fast and clearly faster than sector 1, without becoming unplayable.
+  MAX_SPEED: 2500,
+  SECTOR_SPEED_BUMP: 95,
 
-  STEER_ACCEL: 6.2,
-  STEER_DECEL: 7.5,
-  STEER_MAXSPEED: 2.5,
+  // Snappier accel/decel than before so touch input reads as immediate
+  // (roughly a 0.2s ramp to full lateral speed instead of 0.4s).
+  STEER_ACCEL: 11,
+  STEER_DECEL: 13,
+  STEER_MAXSPEED: 2.6,
   CENTRIFUGAL: 0.6,
 
   CURVE_MIN_HOLD: 2.6,

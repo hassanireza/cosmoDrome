@@ -2,9 +2,7 @@ import { useGameEngine } from '../hooks/useGameEngine';
 import { TopBar } from './TopBar';
 import { Hud } from './Hud';
 import { Overlays } from './Overlays';
-import { WeaponDock } from './WeaponDock';
 import { TouchControls } from './TouchControls';
-import type { WeaponKey } from '../engine/types';
 
 export function GameScreen(): React.JSX.Element {
   const { canvasRef, bgCanvasRef, engineRef, hud } = useGameEngine();
@@ -13,8 +11,8 @@ export function GameScreen(): React.JSX.Element {
   const start = () => engine?.startGame();
   const resume = () => engine?.togglePause();
   const cycleWeapon = () => engine?.cycleWeapon();
-  const selectWeapon = (key: WeaponKey) => engine?.setWeapon(key);
   const toggleMute = () => engine?.toggleMute();
+  const toggleTilt = () => { void engine?.toggleTilt(); };
 
   return (
     <div className="stage">
@@ -29,11 +27,10 @@ export function GameScreen(): React.JSX.Element {
             id="game"
             width={480}
             height={720}
-            aria-label="Game viewport, use arrow keys or on screen buttons to steer and fire"
+            aria-label="Game viewport, use arrow keys, tilt, or on screen buttons to steer and fire"
           />
 
           <Hud hud={hud} engine={engine} />
-          <WeaponDock hud={hud} onSelect={selectWeapon} />
           <Overlays hud={hud} onStart={start} onResume={resume} />
         </div>
 
@@ -41,7 +38,7 @@ export function GameScreen(): React.JSX.Element {
           <p className="instructions">
             Dodge asteroids, blast raiders, hop stones, and take down the boss every 5th sector.
           </p>
-          <TouchControls engine={engine} onCycleWeapon={cycleWeapon} />
+          <TouchControls engine={engine} hud={hud} onCycleWeapon={cycleWeapon} onToggleTilt={toggleTilt} />
         </footer>
       </main>
 

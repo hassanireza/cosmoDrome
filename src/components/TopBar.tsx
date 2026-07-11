@@ -14,6 +14,9 @@ export function TopBar({ hud, onCycleWeapon, onToggleMute }: TopBarProps): React
       <div className="top-actions">
         <button className="chip-btn weapon-chip" type="button" title="Cycle weapon (Q)" onClick={onCycleWeapon}>
           <span className="weapon-chip-label">gun:</span> <span>{WEAPONS[hud.weapon].label}</span>
+          <span className="weapon-chip-heat" aria-hidden="true">
+            <span className="weapon-chip-heat-fill" style={{ width: `${hud.weaponHeatPct * 100}%` }} />
+          </span>
         </button>
         <button className="chip-btn" type="button" aria-pressed={hud.muted} onClick={onToggleMute}>
           {hud.muted ? 'SOUND OFF' : 'SOUND ON'}

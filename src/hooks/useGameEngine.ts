@@ -24,6 +24,8 @@ const INITIAL_SNAPSHOT: HudSnapshot = {
   toastMessage: null,
   toastNonce: 0,
   muted: false,
+  tiltEnabled: false,
+  tiltAvailable: false,
 };
 
 export interface UseGameEngineResult {

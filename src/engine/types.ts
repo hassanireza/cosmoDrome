@@ -58,6 +58,8 @@ export interface InputState {
   right: boolean;
   thrust: boolean;
   brake: boolean;
+  /** Normalized tilt steering, -1 (full left) to 1 (full right), 0 when off/centered. */
+  tilt: number;
 }
 
 /** Snapshot of everything the React HUD layer needs, pushed once per frame. */
@@ -83,4 +85,6 @@ export interface HudSnapshot {
   toastMessage: string | null;
   toastNonce: number;
   muted: boolean;
+  tiltEnabled: boolean;
+  tiltAvailable: boolean;
 }

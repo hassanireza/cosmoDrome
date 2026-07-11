@@ -358,40 +358,26 @@ body::after {
 .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
 /* ==========================================================================
-   Weapon dock, sits at the base of the porthole
+   Weapon heat, a slim bar under the gun chip in the top bar. The dropdown
+   that used to sit over the porthole was removed: it duplicated the gun
+   name already shown here and covered the ship on small screens.
    ========================================================================== */
 
-.weapon-dock {
+.weapon-chip { position: relative; padding-bottom: 9px; }
+
+.weapon-chip-heat {
   position: absolute;
-  z-index: 2;
-  bottom: 10px;
-  left: 10px;
-  right: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.weapon-select {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  color: var(--ink);
-  background: rgba(10, 9, 8, 0.72);
-  border: 1px solid var(--panel-edge);
+  left: 8px;
+  right: 8px;
+  bottom: 4px;
+  height: 3px;
   border-radius: var(--radius-sm);
-  padding: 6px 8px;
-  cursor: pointer;
-}
-.weapon-select:focus-visible { outline-offset: 1px; }
-
-.weapon-heat {
-  height: 4px;
-  border-radius: var(--radius-sm);
-  background: rgba(222, 214, 200, 0.12);
+  background: rgba(222, 214, 200, 0.14);
   overflow: hidden;
+  display: block;
 }
-.weapon-heat-fill {
+.weapon-chip-heat-fill {
+  display: block;
   height: 100%;
   width: 0%;
   background: linear-gradient(90deg, var(--signal), var(--laser-red));
@@ -580,6 +566,28 @@ body::after {
   line-height: 1.4;
 }
 
+.touch-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.tilt-toggle {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--panel-edge);
+  color: var(--ink-soft);
+  border-radius: var(--radius-sm);
+  padding: 5px 12px;
+  cursor: pointer;
+}
+.tilt-toggle[aria-pressed="true"] { color: var(--signal); border-color: var(--signal-dim); }
+
 .touch-controls {
   display: flex;
   align-items: center;
@@ -589,26 +597,38 @@ body::after {
 }
 
 .touch-btn {
-  width: 52px;
-  height: 44px;
+  width: 56px;
+  height: 52px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--panel-edge);
   background: rgba(222, 214, 200, 0.05);
   color: var(--ink);
-  font-size: 16px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 2px;
   cursor: pointer;
   user-select: none;
   touch-action: none;
 }
+.touch-btn-icon { font-size: 16px; line-height: 1; }
+.touch-btn-label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
 .touch-btn:active { background: rgba(222, 214, 200, 0.12); }
 .touch-btn.boost { background: linear-gradient(180deg, var(--signal), var(--signal-dim)); color: var(--bg-deep); border-color: transparent; }
-.touch-btn.weapon { background: rgba(154, 167, 154, 0.12); border-color: var(--shield); color: var(--shield); font-size: 19px; }
+.touch-btn.boost .touch-btn-label { color: var(--bg-deep); opacity: 0.75; }
+.touch-btn.weapon { background: rgba(154, 167, 154, 0.12); border-color: var(--shield); color: var(--shield); }
+.touch-btn.weapon .touch-btn-icon { font-size: 18px; }
+.touch-btn.weapon .touch-btn-label { color: var(--shield); }
 
 @media (hover: hover) and (pointer: fine) {
-  .touch-controls { display: none; }
+  .touch-wrap { display: none; }
 }
 
 @media (max-height: 620px) {

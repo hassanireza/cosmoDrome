@@ -7,6 +7,7 @@ export class StorageService {
   private static readonly KEY_SCORES = 'cosmodrome_scores_v1';
   private static readonly KEY_MUTE = 'cosmodrome_mute_v1';
   private static readonly KEY_WEAPON = 'cosmodrome_weapon_v1';
+  private static readonly KEY_TILT = 'cosmodrome_tilt_v1';
 
   getBest(): number {
     try {
@@ -75,6 +76,22 @@ export class StorageService {
   setWeapon(weapon: WeaponKey): void {
     try {
       localStorage.setItem(StorageService.KEY_WEAPON, weapon);
+    } catch {
+      /* ignore */
+    }
+  }
+
+  getTiltPreferred(): boolean {
+    try {
+      return localStorage.getItem(StorageService.KEY_TILT) === '1';
+    } catch {
+      return false;
+    }
+  }
+
+  setTiltPreferred(value: boolean): void {
+    try {
+      localStorage.setItem(StorageService.KEY_TILT, value ? '1' : '0');
     } catch {
       /* ignore */
     }
