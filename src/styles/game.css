@@ -129,7 +129,7 @@ body::after {
   padding: 14px 14px 12px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
   min-height: 0;
 }
 
@@ -552,7 +552,7 @@ body::after {
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  padding: 4px 4px 0;
+  padding: 0 4px;
   flex-shrink: 0;
   margin: 0;
 }
