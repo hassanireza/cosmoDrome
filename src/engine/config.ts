@@ -4,7 +4,10 @@ export const CFG = {
   W: 480,
   H: 720,
   HORIZON_Y: 150,
-  PLANE_Y: 660,
+  // Was 660, leaving a 60px dead strip below the ship once the old
+  // overlapping weapon dock (which used to sit in that strip) was
+  // removed. Pushed down near the canvas edge to close that gap.
+  PLANE_Y: 706,
   ROAD_HALF_NEAR: 168,
   FOCAL: 300,
   Z_SPAWN: 3000,
