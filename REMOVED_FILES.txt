@@ -1,0 +1,22 @@
+# v1 files replaced by the v2 rewrite
+src/components/GameScreen.tsx
+src/components/Hud.tsx
+src/components/Overlays.tsx
+src/components/ShipIcon.tsx
+src/components/TopBar.tsx
+src/components/TouchControls.tsx
+src/components/WeaponDock.tsx
+src/engine/AudioEngine.ts
+src/engine/GameEngine.ts
+src/engine/InputController.ts
+src/engine/Physics.ts
+src/engine/Renderer.ts
+src/engine/StorageService.ts
+src/engine/config.ts
+src/engine/types.ts
+src/engine/entities/Bolt.ts
+src/engine/entities/Boss.ts
+src/engine/entities/Obstacle.ts
+src/engine/entities/Particle.ts
+src/engine/entities/Player.ts
+src/hooks/useGameEngine.ts

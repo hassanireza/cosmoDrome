@@ -1,25 +1,48 @@
 # Cosmodrome
 
-A nostalgic Enduro style endless space racer. Steer a starfighter through
-asteroid fields, drift around scouts and wrecks, hop over hazard stones,
-and take down a sector boss every fifth wave.
+A touch first endless flyer. Drift a small vessel along a causeway above the abyss, hop
+stones, break shapes, and face colossi that learn how you move. WebGL2, no game engine
+dependency, React only for the HUD.
 
-Private project, not for redistribution.
+## Run
+
+```bash
+npm ci
+npm run dev        # http://localhost:5173/cosmodrome/
+npm test           # engine tests (Node 22+)
+npm run lint
+npm run build
+```
+
+Open on a phone for the intended experience. Add to home screen for fullscreen.
 
 ## Controls
 
-| Action | Keyboard | Touch | Tilt |
-| --- | --- | --- | --- |
-| Steer | Left / Right or A / D | left / right buttons | tilt phone left / right |
-| Thrust / brake | Up / Down or W / S | keyboard only | -- |
-| Hop a stone | space | hop button | -- |
-| Cycle weapon | Q | gun button | -- |
-| Select weapon directly | 1 through 4 | -- | -- |
-| Pause | P or Esc | tap outside canvas | -- |
-| Confirm / launch | Enter | on-screen button | -- |
+| Action | Touch | Keyboard |
+| --- | --- | --- |
+| Steer | drag anywhere | arrows or A D |
+| Hop | swipe up, or tap with a second finger | space or W |
+| Weapon | tap a sigil | 1 to 4, Q cycles |
+| Pause | pause button | P or Esc |
 
-Tilt steering is opt-in via the "tilt steering" toggle above the touch
-controls (shown on touch devices only). On iOS it needs to be turned on
-with a tap so the browser can show its motion-permission prompt; on other
-platforms it turns on immediately. Digital left/right buttons always
-override tilt for quick corrections.
+## Structure
+
+```
+src/core      math, rng, config, shared types
+src/ai        player model, difficulty, director, spawner, fairness, boss brain, rewards
+src/sim       Game (the simulation), track, entities, particles, boss
+src/render    WebGL2 renderer, shaders, meshes, scene builder, frame governor
+src/audio     procedural adaptive score
+src/input     touch gestures, haptics
+src/host      GameHost: frame loop and glue
+src/ui        React HUD and screens
+tests         engine tests
+docs          ENGINES.md, DESIGN.md
+```
+
+Read `docs/ENGINES.md` for the algorithms and `docs/DESIGN.md` for brand and mobile notes.
+
+## Upgrading from v1
+
+Unzip the update over the repo, then run `./scripts/apply-update.sh` to delete the v1 files
+listed in `REMOVED_FILES.txt`. Existing best score and top drifts carry over.

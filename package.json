@@ -3,12 +3,13 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "An endless drift through the dark. A from-scratch canvas space racer built with React, TypeScript, and an OOP game engine.",
+  "description": "A touch first endless flyer. WebGL2 renderer, adaptive difficulty, bosses that learn. Brand: Abyssal Liturgy.",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint src",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "node --test \"tests/*.test.ts\""
   },
   "dependencies": {
     "react": "^19.2.7",
