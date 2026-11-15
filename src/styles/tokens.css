@@ -1,0 +1,36 @@
+/* Abyssal Liturgy tokens, shared with hassanireza.github.io (src/styles/tokens.css). */
+:root {
+  --bg: #08090b;
+  --bg-2: #0d1013;
+  --bg-3: #12161a;
+  --border: #1c2024;
+  --border-hover: #343a3f;
+
+  --text: #e6e3da;
+  --text-2: #9aa3a8;
+  --text-3: #7f8589;
+
+  --accent: #7c8891;
+  --accent-bright: #c9cfd2;
+  /* One muted warm tone, reserved for hostile light inside the game. Never used in chrome. */
+  --oxide: #b2806d;
+
+  --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-liturgy: cubic-bezier(0.16, 0.4, 0.15, 1);
+
+  --font-display: "Cormorant Garamond", "EB Garamond", Georgia, serif;
+  --font-body: "Jost", "DM Sans", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* HUD geometry. The top offset is the fix for the soft top bar on iOS:
+     the bar sits 36px below the safe area (24px on short screens). */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --hud-top: calc(var(--safe-top) + 36px);
+  --screen-top: calc(var(--safe-top) + 28px);
+}
+
+@media (max-height: 700px) {
+  :root { --hud-top: calc(var(--safe-top) + 24px); }
+}
